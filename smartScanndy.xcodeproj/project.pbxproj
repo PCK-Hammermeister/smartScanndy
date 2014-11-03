@@ -19,7 +19,7 @@
 		8F5875C319FFE28E007C2218 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8F5875C419FFE298007C2218 /* plugin.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = plugin.xml; sourceTree = "<group>"; };
 		8F5875C519FFE2E7007C2218 /* CDVSmartScanndy.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CDVSmartScanndy.mm; sourceTree = "<group>"; };
-		8FF69B871A08290F00F76A5E /* smarscanndy.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = smarscanndy.js; path = www/smarscanndy.js; sourceTree = "<group>"; };
+		8FF69B871A08290F00F76A5E /* smartscanndy.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = smartscanndy.js; path = www/smartscanndy.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -69,7 +69,7 @@
 		8FF69B891A08292300F76A5E /* www */ = {
 			isa = PBXGroup;
 			children = (
-				8FF69B871A08290F00F76A5E /* smarscanndy.js */,
+				8FF69B871A08290F00F76A5E /* smartscanndy.js */,
 			);
 			name = www;
 			sourceTree = "<group>";
