@@ -27,8 +27,6 @@
             </feature>
         </config-file>
 
-        <!--resource-file src="src/ios/scannerOverlay.xib" /-->
-
         <header-file src="src/ios/SComP/crc32.h" />
         <header-file src="src/ios/SComP/scomp.h" />
         <header-file src="src/ios/SComP/Scanndy.h" />
