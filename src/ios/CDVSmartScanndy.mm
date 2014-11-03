@@ -119,13 +119,24 @@ bool scanndyConnected = false;
     }
     
     NSString* response = [self sendString:sccommand];
-    NSString* respconv = "";
+    NSString* respconv40 = "";
+    NSString* respconv13 = "";
     
-    int i = [Unique64to40 pUid40s:respconv pUId64s:response];
+    int i = [Unique64to40 pUid40s:respconv40 pUId64s:response];
+    int j = [Unique64to13 pUid40s:respconv13 pUId64s:response];
     
-    [self sendScanResult: [CDVPluginResult
-                           resultWithStatus: CDVCommandStatus_OK
-                           messageAsString: response]];
+    NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+    [resultDict setObject:response     forKey:@"result"];
+    [resultDict setObject:respconv40   forKey:@"result40"];
+    [resultDict setObject:respconv13   forKey:@"result13"];
+    
+    CDVPluginResult* result = [CDVPluginResult
+                               resultWithStatus: CDVCommandStatus_OK
+                               messageAsDictionary: resultDict
+                               ];
+    
+    NSString* js = [result toSuccessCallbackString:callback];
+    [self writeJavascript:js];
 }
 
 @end
