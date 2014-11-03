@@ -18,6 +18,7 @@ var ScanndyLoader = function (require, exports, module) {
      *
      * @param {Function} successCallback This function will recieve a result object: {
      *        result : 'xxxxxxxxxxxxxxx',    // the raw 64bit code.
+     *        resultraw : 'xxxxxxxxxx', // the raw result string
      *        result40 : 'xxxxxxxxxx', // the decoded 40bit code
      *        result13 : 'xxxxx', // the decoded 13bit code
      *    }
@@ -56,4 +57,6 @@ cordova.define("cordova/plugin/SmartScanndy", ScanndyLoader);
 
 
 
-
+<feature name="SmartScanndy">
+<param name="ios-package" value="CDVSmartScanndy" />
+</feature>

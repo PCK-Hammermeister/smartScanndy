@@ -118,7 +118,8 @@ bool scanndyConnected = false;
         sccommand = [command.arguments objectAtIndex:0];
     }
     
-    NSString* response = [self sendString:sccommand];
+    NSString* responseraw = [self sendString:sccommand];
+    NSString* response = [responseraw substringToIndex:9];
     NSString* respconv40 = "";
     NSString* respconv13 = "";
     
@@ -126,6 +127,7 @@ bool scanndyConnected = false;
     int j = [Unique64to13 pUid40s:respconv13 pUId64s:response];
     
     NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+    [resultDict setObject:responseraw     forKey:@"resultraw"];
     [resultDict setObject:response     forKey:@"result"];
     [resultDict setObject:respconv40   forKey:@"result40"];
     [resultDict setObject:respconv13   forKey:@"result13"];
