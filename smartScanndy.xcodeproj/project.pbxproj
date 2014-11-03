@@ -1,0 +1,118 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		8F5875BA19FFE285007C2218 /* crc32.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
+		8F5875BB19FFE285007C2218 /* crc32.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crc32.h; sourceTree = "<group>"; };
+		8F5875BC19FFE285007C2218 /* EADSessionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EADSessionController.h; sourceTree = "<group>"; };
+		8F5875BD19FFE285007C2218 /* EADSessionController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EADSessionController.m; sourceTree = "<group>"; };
+		8F5875BE19FFE285007C2218 /* Scanndy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scanndy.h; sourceTree = "<group>"; };
+		8F5875BF19FFE285007C2218 /* Scanndy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Scanndy.m; sourceTree = "<group>"; };
+		8F5875C019FFE285007C2218 /* scomp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scomp.c; sourceTree = "<group>"; };
+		8F5875C119FFE285007C2218 /* scomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scomp.h; sourceTree = "<group>"; };
+		8F5875C219FFE285007C2218 /* UniqueUID.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = UniqueUID.c; sourceTree = "<group>"; };
+		8F5875C319FFE28E007C2218 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8F5875C419FFE298007C2218 /* plugin.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = plugin.xml; sourceTree = "<group>"; };
+		8F5875C519FFE2E7007C2218 /* CDVSmartScanndy.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CDVSmartScanndy.mm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		8F5875B019FFE1C2007C2218 = {
+			isa = PBXGroup;
+			children = (
+				8F5875C419FFE298007C2218 /* plugin.xml */,
+				8F5875C319FFE28E007C2218 /* README.md */,
+				8F5875B719FFE285007C2218 /* src */,
+			);
+			sourceTree = "<group>";
+		};
+		8F5875B719FFE285007C2218 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				8F5875B819FFE285007C2218 /* ios */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		8F5875B819FFE285007C2218 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				8F5875C519FFE2E7007C2218 /* CDVSmartScanndy.mm */,
+				8F5875B919FFE285007C2218 /* SComP */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		8F5875B919FFE285007C2218 /* SComP */ = {
+			isa = PBXGroup;
+			children = (
+				8F5875BA19FFE285007C2218 /* crc32.c */,
+				8F5875BB19FFE285007C2218 /* crc32.h */,
+				8F5875BC19FFE285007C2218 /* EADSessionController.h */,
+				8F5875BD19FFE285007C2218 /* EADSessionController.m */,
+				8F5875BE19FFE285007C2218 /* Scanndy.h */,
+				8F5875BF19FFE285007C2218 /* Scanndy.m */,
+				8F5875C019FFE285007C2218 /* scomp.c */,
+				8F5875C119FFE285007C2218 /* scomp.h */,
+				8F5875C219FFE285007C2218 /* UniqueUID.c */,
+			);
+			path = SComP;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		8F5875B119FFE1C2007C2218 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+			};
+			buildConfigurationList = 8F5875B419FFE1C2007C2218 /* Build configuration list for PBXProject "smartScanndy" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8F5875B019FFE1C2007C2218;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		8F5875B519FFE1C2007C2218 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		8F5875B619FFE1C2007C2218 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8F5875B419FFE1C2007C2218 /* Build configuration list for PBXProject "smartScanndy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F5875B519FFE1C2007C2218 /* Debug */,
+				8F5875B619FFE1C2007C2218 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8F5875B119FFE1C2007C2218 /* Project object */;
+}
