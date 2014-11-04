@@ -33,13 +33,13 @@
 
 - (void) initSComP
 {
-	ScompOpt_t opt;
-	opt.i = 1;
-	ScompSetOption( SCOMP_OPT_USE_CRC, opt );
-	opt.cb = sndcb;
-	ScompSetOption( SCOMP_OPT_SNDCB, opt );
-	opt.cb = rcvcb;
-	ScompSetOption( SCOMP_OPT_RCVCB, opt );
+    ScompOpt_t opt;
+    opt.i = 1;
+    ScompSetOption( SCOMP_OPT_USE_CRC, opt );
+    opt.cb = sndcb;
+    ScompSetOption( SCOMP_OPT_SNDCB, opt );
+    opt.cb = rcvcb;
+    ScompSetOption( SCOMP_OPT_RCVCB, opt );
 }
 
 - (void) checkConnectedAccessory
@@ -138,7 +138,7 @@ static int rcvcb( void *array, int size, int to )
 
 - (NSInteger) sendData_ignoreResponse:(NSData *)data
 {
-  	int sseq = -1;
+    int sseq = -1;
     NSUInteger size = [data length] / sizeof(char);
     char* array = (char*) [data bytes];
     
@@ -156,7 +156,7 @@ static int rcvcb( void *array, int size, int to )
     NSData* data = nil;
     int size = SCOMP_ARRAY_SIZE;
     char array[size];
-  	int slen;
+    int slen;
     int seq;
     int type;
     int res = 0;
@@ -164,7 +164,7 @@ static int rcvcb( void *array, int size, int to )
     res = ScompRecv(array, &size, &seq, &type, SCOMP_REC_TIMOUT);
     
     switch ( res )
-	{
+    {
         case SCOMP_ERR_OK:
             if ( SCOMP_REQUEST == type )
             {
@@ -176,7 +176,7 @@ static int rcvcb( void *array, int size, int to )
                 
                 ScompSendResponse( array, slen, seq );
                 
-                //put async callback in thread's queue and return immediately 
+                //put async callback in thread's queue and return immediately
                 [self performSelectorOnMainThread:@selector(selector_scanndyRequestAsyncCallback) withObject:nil waitUntilDone:NO];
                 
                 //[self.delegate scanndyRequestAsyncCallback];
@@ -196,7 +196,7 @@ static int rcvcb( void *array, int size, int to )
             //unknown ScompRecv return value
             NSLog(@"nRcvErr: %s", ScompStrErr( res ));
             break;
-	}
+    }
 }
 
 - (void)_accessorySendData:(NSNotification *)notification
@@ -302,7 +302,7 @@ static int rcvcb( void *array, int size, int to )
     {
         [_accessoryList removeObjectAtIndex:disconnectedAccessoryIndex];
         [_eaSessionController closeSession];
-	}
+    }
     else
     {
         NSLog(@"could not find disconnected accessory in accessory list");
@@ -319,16 +319,16 @@ static int rcvcb( void *array, int size, int to )
     
     [_eaSessionController closeSession];
     
-    [_accessory release];
+    //[_accessory release];
     _accessory = nil;
-    [_accessoryList release];
+    //[_accessoryList release];
     _accessoryList = nil;
-    [_selectedAccessory release];
+    //[_selectedAccessory release];
     _selectedAccessory = nil;
-    [_selectedProtokol release];
+    //[_selectedProtokol release];
     _selectedProtokol = nil;
     
-    [super dealloc];
+    //[super dealloc];
 }
 
 

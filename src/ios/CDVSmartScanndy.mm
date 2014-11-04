@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <bsp/bsp.h>
+//#include <bsp/bsp.h>
 
 
 // convert string of hex digits to array of bytes
@@ -160,11 +160,11 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
     ( ( uid64[ 4 ] >> 3 ) & 0x10 ) |
     ( ( uid64[ 4 ] >> 2 ) & 0x0f );
     
-    uid40[ 3 ] = ( ( uid64[ 4 ] << 7 ) & 0x80 ) | 
+    uid40[ 3 ] = ( ( uid64[ 4 ] << 7 ) & 0x80 ) |
     ( ( uid64[ 5 ] >> 1 ) & 0x70 ) |
     (   uid64[ 5 ]        & 0x0f );
     
-    uid40[ 4 ] = ( ( uid64[ 6 ] << 1 ) & 0xf0 ) | 
+    uid40[ 4 ] = ( ( uid64[ 6 ] << 1 ) & 0xf0 ) |
     ( ( uid64[ 6 ] << 2 ) & 0x0c ) |
     ( ( uid64[ 7 ] >> 6 ) & 0x03 );
     
@@ -179,13 +179,6 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
 //------------------------------------------------------------------------------
 @interface CDVSmartScanndy : CDVPlugin <ScanndyDelegate> {}
 
-Scanndy *myScanndy;
-NSString *accessoryRequest;
-NSString *connectCallback;
-NSString *disconnectCallback;
-NSString *successCallback;
-NSString *errorCallback;
-bool scanndyConnected = false;
 
 - (void)rfidscan:(CDVInvokedUrlCommand*)command;
 @end
@@ -195,6 +188,13 @@ bool scanndyConnected = false;
 //------------------------------------------------------------------------------
 @implementation CDVSmartScanndy
 
+Scanndy *myScanndy;
+NSString *accessoryRequest;
+NSString *connectCallback;
+NSString *disconnectCallback;
+NSString *successCallback;
+NSString *errorCallback;
+bool scanndyConnected = false;
 
 - (void)pluginInitialize
 {
@@ -221,7 +221,7 @@ bool scanndyConnected = false;
 {
     accessoryRequest = [[NSString alloc] initWithData:request encoding:NSASCIIStringEncoding];
     
-//    [self addToTextView:accessoryRequest];
+    //    [self addToTextView:accessoryRequest];
     
     //send the answer according to the request
     NSData* response = [@"ok" dataUsingEncoding:NSUTF8StringEncoding];
@@ -233,10 +233,10 @@ bool scanndyConnected = false;
 - (void) scanndyRequestAsyncCallback
 {
     //scan barcode, if trigger key was sent from accessory
-//    if ([accessoryRequest isEqualToString:@"keydata:T"])
-//    {
-//        [self scanBarcode];
-//    }
+    //    if ([accessoryRequest isEqualToString:@"keydata:T"])
+    //    {
+    //        [self scanBarcode];
+    //    }
     return;
 }
 
@@ -265,12 +265,11 @@ bool scanndyConnected = false;
 
 //--------------------------------------------------------------------------
 - (void)rfidscan:(CDVInvokedUrlCommand*)command {
-    CDVbcsProcessor* processor;
     NSString*       callback;
     
     callback = command.callbackId;
     
-    // We allow the user to define an alternate xib file for loading the overlay. 
+    // We allow the user to define an alternate xib file for loading the overlay.
     NSString *sccommand = nil;
     if ( [command.arguments count] >= 1 )
     {
@@ -281,12 +280,12 @@ bool scanndyConnected = false;
     NSString* response = [responseraw substringToIndex:9];
     
     const char* cresponse = [response UTF8String];
-    char* cresponse40;
-    char* cresponse13;
+    char* cresponse40 = "";
+    char* cresponse13 = "";
     
-    int i = Unique64to40(cresponse40, cresponse);
-    int j = Unique64to13(cresponse13, cresponse);
-
+    Unique64to40(cresponse40, cresponse);
+    Unique64to13(cresponse13, cresponse);
+    
     NSString* respconv40 = [[NSString alloc] initWithUTF8String:cresponse40];
     NSString* respconv13 = [[NSString alloc] initWithUTF8String:cresponse13];
     
