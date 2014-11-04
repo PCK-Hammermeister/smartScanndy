@@ -54,9 +54,3 @@ var ScanndyLoader = function (require, exports, module) {
 ScanndyLoader(require, exports, module);
 
 cordova.define("cordova/plugin/SmartScanndy", ScanndyLoader);
-
-
-
-<feature name="SmartScanndy">
-<param name="ios-package" value="CDVSmartScanndy" />
-</feature>
