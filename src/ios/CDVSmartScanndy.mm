@@ -227,7 +227,7 @@ CDVscndyProcessor* processor;
     NSString* responseraw = [processor scanrfid:sccommand];
     
     //NSString* responseraw = [self sendString:sccommand];
-    NSString* response = [responseraw substringToIndex:9];
+    NSString* response = [responseraw substringFromIndex:9];
     
     
     NSString* respconv40 = [processor conv64to40:response];
@@ -350,7 +350,7 @@ bool scanndyConnected = false;
 
 - (NSString*) conv64to40:(NSString*)value {
     const char* cresponse = [value UTF8String];
-    char* cresponse40 = "";
+    char* cresponse40 = (char*)calloc(40+1,1);
     
     Unique64to40(cresponse40, cresponse);
     
@@ -360,7 +360,7 @@ bool scanndyConnected = false;
 
 - (NSString*) conv64to13:(NSString*)value {
     const char* cresponse = [value UTF8String];
-    char* cresponse13 = "";
+    char* cresponse13 = (char*)calloc(13+1,1);
     
     Unique64to13(cresponse13, cresponse);
     
