@@ -189,7 +189,7 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
 @interface CDVscndyProcessor : NSObject <ScanndyDelegate> {}
 @property (nonatomic, retain) CDVSmartScanndy*            plugin;
 
-- (id)initWithPlugin:(CDVBarcodeScanner*)plugin;
+- (id)initWithPlugin:(CDVSmartScanndy*)plugin;
 - (NSString*)scanrfid:(NSString*)sccommand;
 - (NSString*)conv64to40:(NSString*)value;
 - (NSString*)conv64to13:(NSString*)value;

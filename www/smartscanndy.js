@@ -42,7 +42,7 @@ var ScanndyLoader = function (require, exports, module) {
         
         var scanndyCommand = 'rfidscan:tid';
         
-        exec(successCallback, errorCallback, 'CDVSmartScanndy', 'rfidscan', [scanndyCommand]);
+        exec(successCallback, errorCallback, 'SmartScanndy', 'rfidscan', [scanndyCommand]);
     };
     
     
