@@ -15,7 +15,6 @@
 		8F5875BF19FFE285007C2218 /* Scanndy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Scanndy.m; sourceTree = "<group>"; };
 		8F5875C019FFE285007C2218 /* scomp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scomp.c; sourceTree = "<group>"; };
 		8F5875C119FFE285007C2218 /* scomp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scomp.h; sourceTree = "<group>"; };
-		8F5875C219FFE285007C2218 /* UniqueUID.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = UniqueUID.c; sourceTree = "<group>"; };
 		8F5875C319FFE28E007C2218 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8F5875C419FFE298007C2218 /* plugin.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = plugin.xml; sourceTree = "<group>"; };
 		8F5875C519FFE2E7007C2218 /* CDVSmartScanndy.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CDVSmartScanndy.mm; sourceTree = "<group>"; };
@@ -61,7 +60,6 @@
 				8F5875BF19FFE285007C2218 /* Scanndy.m */,
 				8F5875C019FFE285007C2218 /* scomp.c */,
 				8F5875C119FFE285007C2218 /* scomp.h */,
-				8F5875C219FFE285007C2218 /* UniqueUID.c */,
 			);
 			path = SComP;
 			sourceTree = "<group>";

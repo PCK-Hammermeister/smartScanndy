@@ -33,11 +33,10 @@
         <header-file src="src/ios/SComP/EADSessionController.h" />
 
         <source-file src="src/ios/CDVSmartScanndy.mm" compiler-flags="-fno-objc-arc" />
-        <source-file src="src/ios/SComP/crc32.c" />
-        <source-file src="src/ios/SComP/scomp.c" />
-        <source-file src="src/ios/SComP/Scanndy.m" />
-        <source-file src="src/ios/SComP/EADSessionController.m" />
-        <source-file src="src/ios/SComP/UniqueUID.c" />
+        <source-file src="src/ios/SComP/crc32.c" compiler-flags="-fno-objc-arc" />
+        <source-file src="src/ios/SComP/scomp.c" compiler-flags="-fno-objc-arc" />
+        <source-file src="src/ios/SComP/Scanndy.m" compiler-flags="-fno-objc-arc" />
+        <source-file src="src/ios/SComP/EADSessionController.m" compiler-flags="-fno-objc-arc" />
 
         <framework src="QuartzCore.framework" />
         <framework src="ExternalAccessory.framework" />

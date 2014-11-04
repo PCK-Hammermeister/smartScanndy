@@ -319,16 +319,16 @@ static int rcvcb( void *array, int size, int to )
     
     [_eaSessionController closeSession];
     
-    //[_accessory release];
+    [_accessory release];
     _accessory = nil;
-    //[_accessoryList release];
+    [_accessoryList release];
     _accessoryList = nil;
-    //[_selectedAccessory release];
+    [_selectedAccessory release];
     _selectedAccessory = nil;
-    //[_selectedProtokol release];
+    [_selectedProtokol release];
     _selectedProtokol = nil;
     
-    //[super dealloc];
+    [super dealloc];
 }
 
 
