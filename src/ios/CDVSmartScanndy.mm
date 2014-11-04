@@ -174,6 +174,8 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
     return 0;
 }
 
+@class CDVscndyProcessor;
+
 //------------------------------------------------------------------------------
 // plugin class
 //------------------------------------------------------------------------------
@@ -222,7 +224,7 @@ CDVscndyProcessor* processor;
         sccommand = [command.arguments objectAtIndex:0];
     }
     
-    NSString* responseraw = [processor rfidscan:sccommand];
+    NSString* responseraw = [processor scanrfid:sccommand];
     
     //NSString* responseraw = [self sendString:sccommand];
     NSString* response = [responseraw substringToIndex:9];
