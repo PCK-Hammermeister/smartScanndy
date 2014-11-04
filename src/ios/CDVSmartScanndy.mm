@@ -177,10 +177,20 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
 //------------------------------------------------------------------------------
 // plugin class
 //------------------------------------------------------------------------------
-@interface CDVSmartScanndy : CDVPlugin <ScanndyDelegate> {}
-
-
+@interface CDVSmartScanndy : CDVPlugin {}
 - (void)rfidscan:(CDVInvokedUrlCommand*)command;
+@end
+
+//------------------------------------------------------------------------------
+// class that does the grunt work
+//------------------------------------------------------------------------------
+@interface CDVscndyProcessor : NSObject <ScanndyDelegate> {}
+@property (nonatomic, retain) CDVSmartScanndy*            plugin;
+
+- (id)initWithPlugin:(CDVBarcodeScanner*)plugin;
+- (NSString*)scanrfid:(NSString*)sccommand;
+- (NSString*)conv64to40:(NSString*)value;
+- (NSString*)conv64to13:(NSString*)value;
 @end
 
 //------------------------------------------------------------------------------
@@ -188,19 +198,87 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
 //------------------------------------------------------------------------------
 @implementation CDVSmartScanndy
 
-Scanndy *myScanndy;
-NSString *accessoryRequest;
-NSString *connectCallback;
-NSString *disconnectCallback;
-NSString *successCallback;
-NSString *errorCallback;
-bool scanndyConnected = false;
+CDVscndyProcessor* processor;
+
 
 - (void)pluginInitialize
 {
+    processor = [[CDVscndyProcessor alloc]
+                 initWithPlugin:self
+                 ];
+}
+
+
+//--------------------------------------------------------------------------
+- (void)rfidscan:(CDVInvokedUrlCommand*)command {
+    NSString*       callback;
+    
+    callback = command.callbackId;
+    
+    // We allow the user to define an alternate xib file for loading the overlay.
+    NSString *sccommand = nil;
+    if ( [command.arguments count] >= 1 )
+    {
+        sccommand = [command.arguments objectAtIndex:0];
+    }
+    
+    NSString* responseraw = [processor rfidscan:sccommand];
+    
+    //NSString* responseraw = [self sendString:sccommand];
+    NSString* response = [responseraw substringToIndex:9];
+    
+    
+    NSString* respconv40 = [processor conv64to40:response];
+    //NSString* respconv13 = [[NSString alloc] initWithUTF8String:cresponse13];
+    NSString* respconv13 = [processor conv64to13:response];
+    
+    NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+    [resultDict setObject:responseraw     forKey:@"resultraw"];
+    [resultDict setObject:response     forKey:@"result"];
+    [resultDict setObject:respconv40   forKey:@"result40"];
+    [resultDict setObject:respconv13   forKey:@"result13"];
+    
+    CDVPluginResult* result = [CDVPluginResult
+                               resultWithStatus: CDVCommandStatus_OK
+                               messageAsDictionary: resultDict
+                               ];
+    
+    NSString* js = [result toSuccessCallbackString:callback];
+    [self writeJavascript:js];
+}
+
+@end
+
+//------------------------------------------------------------------------------
+// class that does the grunt work
+//------------------------------------------------------------------------------
+@implementation CDVscndyProcessor
+
+@synthesize plugin               = _plugin;
+
+Scanndy *myScanndy;
+NSString *accessoryRequest;
+bool scanndyConnected = false;
+
+//--------------------------------------------------------------------------
+- (id)initWithPlugin:(CDVSmartScanndy*)plugin {
+    self = [super init];
+    if (!self) return self;
+    
+    self.plugin               = plugin;
+    
     myScanndy = [Scanndy alloc];
     myScanndy.delegate = self;
     [myScanndy init];
+    
+    return self;
+}
+
+//--------------------------------------------------------------------------
+- (void)dealloc {
+    self.plugin = nil;
+    
+    [super dealloc];
 }
 
 //--------------------------------------------------------------------------
@@ -240,7 +318,6 @@ bool scanndyConnected = false;
     return;
 }
 
-
 //simple send function
 - (NSData*) sendData:(NSData*)dataToSend withTimout:(NSInteger)timeout
 {
@@ -263,45 +340,31 @@ bool scanndyConnected = false;
     return [self sendString:stringToSend withTimeout:1000];
 }
 
+
 //--------------------------------------------------------------------------
-- (void)rfidscan:(CDVInvokedUrlCommand*)command {
-    NSString*       callback;
-    
-    callback = command.callbackId;
-    
-    // We allow the user to define an alternate xib file for loading the overlay.
-    NSString *sccommand = nil;
-    if ( [command.arguments count] >= 1 )
-    {
-        sccommand = [command.arguments objectAtIndex:0];
-    }
-    
-    NSString* responseraw = [self sendString:sccommand];
-    NSString* response = [responseraw substringToIndex:9];
-    
-    const char* cresponse = [response UTF8String];
+- (NSString*) scanrfid:(NSString*)sccommand {
+    return [self sendString:sccommand];
+}
+
+- (NSString*) conv64to40:(NSString*)value {
+    const char* cresponse = [value UTF8String];
     char* cresponse40 = "";
-    char* cresponse13 = "";
     
     Unique64to40(cresponse40, cresponse);
+    
+    return [[NSString alloc] initWithUTF8String:cresponse40];
+    
+}
+
+- (NSString*) conv64to13:(NSString*)value {
+    const char* cresponse = [value UTF8String];
+    char* cresponse13 = "";
+    
     Unique64to13(cresponse13, cresponse);
     
-    NSString* respconv40 = [[NSString alloc] initWithUTF8String:cresponse40];
-    NSString* respconv13 = [[NSString alloc] initWithUTF8String:cresponse13];
-    
-    NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
-    [resultDict setObject:responseraw     forKey:@"resultraw"];
-    [resultDict setObject:response     forKey:@"result"];
-    [resultDict setObject:respconv40   forKey:@"result40"];
-    [resultDict setObject:respconv13   forKey:@"result13"];
-    
-    CDVPluginResult* result = [CDVPluginResult
-                               resultWithStatus: CDVCommandStatus_OK
-                               messageAsDictionary: resultDict
-                               ];
-    
-    NSString* js = [result toSuccessCallbackString:callback];
-    [self writeJavascript:js];
+    return [[NSString alloc] initWithUTF8String:cresponse13];
 }
 
 @end
+
+
