@@ -224,6 +224,14 @@ CDVscndyProcessor* processor;
         sccommand = [command.arguments objectAtIndex:0];
     }
     
+    UIAlertView *infoAlert = [[UIAlertView alloc] initWithTitle:@"INFO"
+                                                         message:@"before rfidscan"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+    [infoAlert show];
+    [infoAlert release];
+    
     NSString* responseraw = [processor scanrfid:sccommand];
     
     //NSString* responseraw = [self sendString:sccommand];
