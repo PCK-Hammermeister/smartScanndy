@@ -213,56 +213,85 @@ CDVscndyProcessor* processor;
 
 //--------------------------------------------------------------------------
 - (void)rfidscan:(CDVInvokedUrlCommand*)command {
-    NSString*       callback;
+    // Check command.arguments here.
+    [self.commandDelegate runInBackground:^{
     
-    callback = command.callbackId;
-    
-    // We allow the user to define an alternate xib file for loading the overlay.
-    NSString *sccommand = nil;
-    if ( [command.arguments count] >= 1 )
-    {
-        sccommand = [command.arguments objectAtIndex:0];
-    }
-    
-    UIAlertView *infoAlert = [[UIAlertView alloc] initWithTitle:@"INFO"
-                                                         message:@"before rfidscan"
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-    [infoAlert show];
-    [infoAlert release];
-    
-    NSString* responseraw = [processor scanrfid:sccommand];
-    
-    //NSString* responseraw = [self sendString:sccommand];
-    NSString* response = [responseraw substringFromIndex:9];
-    
-    
-    NSString* respconv40 = [processor conv64to40:response];
-    //NSString* respconv13 = [[NSString alloc] initWithUTF8String:cresponse13];
-    NSString* respconv13 = [processor conv64to13:response];
-    
-    NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
-    [resultDict setObject:responseraw     forKey:@"resultraw"];
-    [resultDict setObject:response     forKey:@"result"];
-    [resultDict setObject:respconv40   forKey:@"result40"];
-    [resultDict setObject:respconv13   forKey:@"result13"];
-    
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"RESULT"
-                                                         message:respconv40
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-    [errorAlert show];
-    [errorAlert release];
-    
-    CDVPluginResult* result = [CDVPluginResult
-                               resultWithStatus: CDVCommandStatus_OK
-                               messageAsDictionary: resultDict
-                               ];
-    
-    NSString* js = [result toSuccessCallbackString:callback];
-    [self writeJavascript:js];
+        NSString*       callback;
+        
+        callback = command.callbackId;
+        
+        // We allow the user to define an alternate xib file for loading the overlay.
+        NSString *sccommand = nil;
+        if ( [command.arguments count] >= 1 )
+        {
+            sccommand = [command.arguments objectAtIndex:0];
+        }
+        
+        UIAlertView *infoAlert = [[UIAlertView alloc] initWithTitle:@"INFO"
+                                                            message:@"before rfidscan"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [infoAlert show];
+        [infoAlert release];
+        
+        CDVPluginResult* pluginResult = nil;
+        NSString* myarg = [command.arguments objectAtIndex:0];
+        
+        NSString* responseraw = [processor scanrfid:sccommand];
+        
+        CDVPluginResult* result;
+        
+        if ( responseraw != nil && ![responseraw isEqualToString @""] && [responseraw substringFromIndex:9] != nil) {
+            
+            //NSString* responseraw = [self sendString:sccommand];
+            NSString* response = [responseraw substringFromIndex:9];
+            
+            
+            NSString* respconv40 = [processor conv64to40:response];
+            //NSString* respconv13 = [[NSString alloc] initWithUTF8String:cresponse13];
+            NSString* respconv13 = [processor conv64to13:response];
+            
+            NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+            [resultDict setObject:responseraw     forKey:@"resultraw"];
+            [resultDict setObject:response     forKey:@"result"];
+            [resultDict setObject:respconv40   forKey:@"result40"];
+            [resultDict setObject:respconv13   forKey:@"result13"];
+            
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"RESULT"
+                                                                 message:respconv40
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil];
+            [errorAlert show];
+            [errorAlert release];
+            
+            result = [CDVPluginResult
+                      resultWithStatus: CDVCommandStatus_OK
+                      messageAsDictionary: resultDict
+                      ];
+        }
+        else
+        {
+            
+            NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+            [resultDict setObject:responseraw     forKey:@"resultraw"];
+            [resultDict setObject:@""     forKey:@"result"];
+            [resultDict setObject:@""   forKey:@"result40"];
+            [resultDict setObject:@""   forKey:@"result13"];
+            
+            result = [CDVPluginResult
+                      resultWithStatus: CDVCommandStatus_ERROR
+                      messageAsDictionary: resultDict
+                      ];
+            
+        }
+        
+        //NSString* js = [result toSuccessCallbackString:callback];
+        //[self writeJavascript:js];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callback];
+
+    }];
 }
 
 @end
