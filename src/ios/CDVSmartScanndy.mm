@@ -240,6 +240,14 @@ CDVscndyProcessor* processor;
     [resultDict setObject:respconv40   forKey:@"result40"];
     [resultDict setObject:respconv13   forKey:@"result13"];
     
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"RESULT"
+                                                         message:respconv40
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+    [errorAlert show];
+    [errorAlert release];
+    
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus: CDVCommandStatus_OK
                                messageAsDictionary: resultDict
