@@ -214,6 +214,16 @@ CDVscndyProcessor* processor;
 //--------------------------------------------------------------------------
 - (void)rfidscan:(CDVInvokedUrlCommand*)command {
     // Check command.arguments here.
+    
+    
+    UIAlertView *infoAlert = [[UIAlertView alloc] initWithTitle:@"INFO"
+                                                        message:@"before rfidscan"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+    [infoAlert show];
+    [infoAlert release];
+    
     [self.commandDelegate runInBackground:^{
     
         NSString*       callback;
@@ -226,14 +236,7 @@ CDVscndyProcessor* processor;
         {
             sccommand = [command.arguments objectAtIndex:0];
         }
-        
-        UIAlertView *infoAlert = [[UIAlertView alloc] initWithTitle:@"INFO"
-                                                            message:@"before rfidscan"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [infoAlert show];
-        [infoAlert release];
+
         
         CDVPluginResult* pluginResult = nil;
         NSString* myarg = [command.arguments objectAtIndex:0];
@@ -257,15 +260,7 @@ CDVscndyProcessor* processor;
             [resultDict setObject:response     forKey:@"result"];
             [resultDict setObject:respconv40   forKey:@"result40"];
             [resultDict setObject:respconv13   forKey:@"result13"];
-            
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"RESULT"
-                                                                 message:respconv40
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil];
-            [errorAlert show];
-            [errorAlert release];
-            
+                    
             result = [CDVPluginResult
                       resultWithStatus: CDVCommandStatus_OK
                       messageAsDictionary: resultDict
