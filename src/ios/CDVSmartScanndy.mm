@@ -242,7 +242,7 @@ CDVscndyProcessor* processor;
         
         CDVPluginResult* result;
         
-        if ( responseraw != nil && ![responseraw isEqualToString:@""] && [responseraw substringFromIndex:9] != nil) {
+        if ( responseraw != nil && ![responseraw isEqualToString:@""] && [responseraw rangeOfString:@"rfiddata:"].location != NSNotFound) {
             
             //NSString* responseraw = [self sendString:sccommand];
             NSString* response = [responseraw substringFromIndex:9];
