@@ -45,34 +45,34 @@ cordova.define("de.mission-mobile.cdvplugins.smartscanndy.SmartScanndy", functio
                        exec(successCallback, errorCallback, 'SmartScanndy', 'rfidscan', [scanndyCommand]);
                    };
                
-                   var scanndy_button_evt = new CustomEvent("scanndy_button",
-                                                            { bubbles: true,
-                                                            cancelable: false,
-                                                            details: "Scanndy button pressed"
-                                                            });
-                   
-                   SmartScanndy.prototype.registerbuttonevent = function () {
-                       exec(function () {
-                                // Fire the event
-                                document.dispatchEvent(scanndy_button_evt);
-                            }, function () {}, 'SmartScanndy', 'registerbutton');
-                   };
-                   
+//                   var scanndy_button_evt = new CustomEvent("scanndy_button",
+//                                                            { bubbles: true,
+//                                                            cancelable: false,
+//                                                            details: "Scanndy button pressed"
+//                                                            });
+//                   
+//                   SmartScanndy.prototype.registerbuttonevent = function () {
+//                       exec(function () {
+//                                // Fire the event
+//                                document.dispatchEvent(scanndy_button_evt);
+//                            }, function () {}, 'SmartScanndy', 'registerbutton');
+//                   };
+               
                    var smartScanndy = new SmartScanndy();
                    module.exports = smartScanndy;
                    
-                   /**
-                    * Register button callback event "scanndy_button".
-                    */
-                   document.addEventListener("deviceready", function(e) {
-   
-                                            // register for the first time
-                                            smartScanndy.registerbuttonevent();
-   
-                                            // re-register everytime the event was fired (in capture phase)
-                                            document.addEventListener("scanndy_button", smartScanndy.registerbuttonevent, false);
-   
-                                       });
+//                   /**
+//                    * Register button callback event "scanndy_button".
+//                    */
+//                   document.addEventListener("deviceready", function(e) {
+//   
+//                                            // register for the first time
+//                                            smartScanndy.registerbuttonevent();
+//   
+//                                            // re-register everytime the event was fired (in capture phase)
+//                                            document.addEventListener("scanndy_button", smartScanndy.registerbuttonevent, false);
+//   
+//                                       });
                };
                
                ScanndyLoader(require, exports, module);
