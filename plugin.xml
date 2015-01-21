@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="de.mission-mobile.cdvplugins.smartscanndy"
-    version="1.0.5">
+    version="1.0.6">
 
     <name>smartSCANNDY</name>
     <description>You can use this plugin to integrate a smartSCANNDY Barcode/RFID-Scanner by Panmobil</description>
@@ -26,6 +26,12 @@
                 <param name="ios-package" value="CDVSmartScanndy" />
             </feature>
         </config-file>
+        
+        <config-file target="*-Info.plist" parent="UISupportedExternalAccessoryProtocols">
+            <array>
+                <string>com.panmobil.protocol1</string>
+            </array>
+        </config-file>
 
         <header-file src="src/ios/SComP/crc32.h" />
         <header-file src="src/ios/SComP/scomp.h" />
@@ -45,3 +51,10 @@
         <!--framework src="CoreGraphics.framework" /-->
     </platform>
 </plugin>
+
+
+<key></key>
+<array>
+    <string></string>
+</array>
+
