@@ -181,6 +181,7 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
 //------------------------------------------------------------------------------
 @interface CDVSmartScanndy : CDVPlugin {}
 - (void)rfidscan:(CDVInvokedUrlCommand*)command;
+- (void)registerbutton:(CDVInvokedUrlCommand*)command;
 @end
 
 //------------------------------------------------------------------------------
@@ -191,6 +192,7 @@ int Unique64to13( char *pUid40s, const char *pUid64s )
 
 - (id)initWithPlugin:(CDVSmartScanndy*)plugin;
 - (NSString*)scanrfid:(NSString*)sccommand;
+- (void) registerbuttoncallback:(NSString*)callback;
 - (NSString*)conv64to40:(NSString*)value;
 - (NSString*)conv64to13:(NSString*)value;
 @end
@@ -215,8 +217,8 @@ CDVscndyProcessor* processor;
 - (void)rfidscan:(CDVInvokedUrlCommand*)command {
     // Check command.arguments here.
     
-    //[self.commandDelegate runInBackground:^{
-    
+    [self.commandDelegate runInBackground:^{
+        
         NSString*       callback;
         
         callback = command.callbackId;
@@ -227,58 +229,82 @@ CDVscndyProcessor* processor;
         {
             sccommand = [command.arguments objectAtIndex:0];
         }
-
         
-        CDVPluginResult* pluginResult = nil;
-        NSString* myarg = [command.arguments objectAtIndex:0];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString* responseraw = [processor scanrfid:sccommand];
+            
+            CDVPluginResult* result;
+            
+            if ( responseraw != nil && ![responseraw isEqualToString:@""] && [responseraw rangeOfString:@"rfiddata:"].location != NSNotFound) {
+                
+                //NSString* responseraw = [self sendString:sccommand];
+                NSString* response = [responseraw substringFromIndex:9];
+                
+                
+                NSString* respconv40 = [processor conv64to40:response];
+                //NSString* respconv13 = [[NSString alloc] initWithUTF8String:cresponse13];
+                NSString* respconv13 = [processor conv64to13:response];
+                
+                NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+                [resultDict setObject:responseraw     forKey:@"resultraw"];
+                [resultDict setObject:response     forKey:@"result"];
+                [resultDict setObject:respconv40   forKey:@"result40"];
+                [resultDict setObject:respconv13   forKey:@"result13"];
+                
+                result = [CDVPluginResult
+                          resultWithStatus: CDVCommandStatus_OK
+                          messageAsDictionary: resultDict
+                          ];
+                
+                [self.commandDelegate sendPluginResult:result callbackId:callback];
+                
+                [processor scanrfid:@"beep:2500,120"];
+            }
+            else
+            {
+                
+                NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
+                [resultDict setObject:responseraw     forKey:@"resultraw"];
+                [resultDict setObject:@""     forKey:@"result"];
+                [resultDict setObject:@""   forKey:@"result40"];
+                [resultDict setObject:@""   forKey:@"result13"];
+                
+                result = [CDVPluginResult
+                          resultWithStatus: CDVCommandStatus_ERROR
+                          messageAsDictionary: resultDict
+                          ];
+                
+                [self.commandDelegate sendPluginResult:result callbackId:callback];
+                
+            }
+            
+        });
         
-        NSString* responseraw = [processor scanrfid:sccommand];
         
-        CDVPluginResult* result;
-        
-        if ( responseraw != nil && ![responseraw isEqualToString:@""] && [responseraw rangeOfString:@"rfiddata:"].location != NSNotFound) {
-            
-            //NSString* responseraw = [self sendString:sccommand];
-            NSString* response = [responseraw substringFromIndex:9];
-            
-            
-            NSString* respconv40 = [processor conv64to40:response];
-            //NSString* respconv13 = [[NSString alloc] initWithUTF8String:cresponse13];
-            NSString* respconv13 = [processor conv64to13:response];
-            
-            NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
-            [resultDict setObject:responseraw     forKey:@"resultraw"];
-            [resultDict setObject:response     forKey:@"result"];
-            [resultDict setObject:respconv40   forKey:@"result40"];
-            [resultDict setObject:respconv13   forKey:@"result13"];
-            
-            result = [CDVPluginResult
-                      resultWithStatus: CDVCommandStatus_OK
-                      messageAsDictionary: resultDict
-                      ];
-        }
-        else
-        {
-            
-            NSMutableDictionary* resultDict = [[[NSMutableDictionary alloc] init] autorelease];
-            [resultDict setObject:responseraw     forKey:@"resultraw"];
-            [resultDict setObject:@""     forKey:@"result"];
-            [resultDict setObject:@""   forKey:@"result40"];
-            [resultDict setObject:@""   forKey:@"result13"];
-            
-            result = [CDVPluginResult
-                      resultWithStatus: CDVCommandStatus_ERROR
-                      messageAsDictionary: resultDict
-                      ];
-            
-        }
-        
-        //NSString* js = [result toSuccessCallbackString:callback];
-        //[self writeJavascript:js];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:callback];
-
-    //}];
+    }];
 }
+
+- (void)registerbutton:(CDVInvokedUrlCommand *)command {
+    // Check command.arguments here.
+    
+    [self.commandDelegate runInBackground:^{
+        
+        NSString*       callback;
+        
+        callback = command.callbackId;
+        
+        // We allow the user to define an alternate xib file for loading the overlay.
+        NSString *sccommand = nil;
+        if ( [command.arguments count] >= 1 )
+        {
+            sccommand = [command.arguments objectAtIndex:0];
+        }
+        
+        [processor registerbuttoncallback:callback];
+        
+    }];
+}
+
 
 @end
 
@@ -292,6 +318,7 @@ CDVscndyProcessor* processor;
 Scanndy *myScanndy;
 NSString *accessoryRequest;
 bool scanndyConnected = false;
+NSString*       btncallback;
 
 //--------------------------------------------------------------------------
 - (id)initWithPlugin:(CDVSmartScanndy*)plugin {
@@ -343,11 +370,23 @@ bool scanndyConnected = false;
 //request from scanndy has to be handled here... (this is async, this is handeled while accessory already received an answer to its request)
 - (void) scanndyRequestAsyncCallback
 {
-    //scan barcode, if trigger key was sent from accessory
-    //    if ([accessoryRequest isEqualToString:@"keydata:T"])
-    //    {
-    //        [self scanBarcode];
-    //    }
+    //trigger event, if trigger key was sent from accessory
+    if ([accessoryRequest isEqualToString:@"keydata:T"]) {
+        @synchronized(self) {
+            if (self.plugin != nil && btncallback != nil && ![btncallback isEqualToString:@""])
+            {
+                //dispatch_async(dispatch_get_main_queue(), ^{
+                [self.plugin.commandDelegate runInBackground:^{
+                    CDVPluginResult* result;
+                    result = [CDVPluginResult
+                              resultWithStatus: CDVCommandStatus_OK
+                              ];
+                    [self.plugin.commandDelegate sendPluginResult:result callbackId:btncallback];
+                }];
+                //});
+            }
+        }
+    }
     return;
 }
 
@@ -355,7 +394,9 @@ bool scanndyConnected = false;
 - (NSData*) sendData:(NSData*)dataToSend withTimout:(NSInteger)timeout
 {
     //this is the only necessary method you should call on the class scanndy
-    return [myScanndy sendData:dataToSend withTimout:timeout];
+    @synchronized(self) {
+        return [myScanndy sendData:dataToSend withTimout:timeout];
+    }
 }
 
 - (NSString*) sendString:(NSString*)stringToSend withTimeout:(NSInteger)timeout
@@ -378,6 +419,14 @@ bool scanndyConnected = false;
 - (NSString*) scanrfid:(NSString*)sccommand {
     return [self sendString:sccommand];
 }
+
+- (void) registerbuttoncallback:(NSString*)callback {
+    @synchronized(self) {
+        btncallback = [[NSString alloc] initWithString:callback];
+    }
+    return;
+}
+
 
 - (NSString*) conv64to40:(NSString*)value {
     const char* cresponse = [value UTF8String];
