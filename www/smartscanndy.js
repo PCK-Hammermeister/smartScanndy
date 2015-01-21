@@ -52,28 +52,28 @@ cordova.define("de.mission-mobile.cdvplugins.smartscanndy.SmartScanndy", functio
                                                         });
                
                SmartScanndy.prototype.registerbuttonevent = function () {
-               exec(function () {
-                    // Fire the event
-                    document.dispatchEvent(scanndy_button_evt);
-                    }, function () {}, 'SmartScanndy', 'registerbutton');
+                    exec(function () {
+                                // Fire the event
+                                document.dispatchEvent(scanndy_button_evt);
+                           }, function () {}, 'SmartScanndy', 'registerbutton');
                };
                
                var smartScanndy = new SmartScanndy();
                module.exports = smartScanndy;
                
-               /**
-                * Register button callback event "scanndy_button".
-                */
-               document.addEventListener("deviceready", function(e) {
-                                         
-                                         // register for the first time
-                                         smartScanndy.registerbuttonevent();
-                                         
-                                         // re-register everytime the event was fired (in capture phase)
-                                         //document.addEventListener("scanndy_button", smartScanndy.registerbuttonevent, true);
-                                         
-                                    });
-               }
+//               /**
+//                * Register button callback event "scanndy_button".
+//                */
+//               document.addEventListener("deviceready", function(e) {
+//                                         
+//                                         // register for the first time
+//                                         smartScanndy.registerbuttonevent();
+//                                         
+//                                         // re-register everytime the event was fired (in capture phase)
+//                                         document.addEventListener("scanndy_button", smartScanndy.registerbuttonevent, false);
+//                                         
+//                                    });
+//               }
                
                ScanndyLoader(require, exports, module);
                
