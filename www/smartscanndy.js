@@ -70,9 +70,9 @@ cordova.define("de.mission-mobile.cdvplugins.smartscanndy.SmartScanndy", functio
                                          smartScanndy.registerbuttonevent();
                                          
                                          // re-register everytime the event was fired (in capture phase)
-                                         document.addEventListener("scanndy_button", smartScanndy.registerbuttonevent, true);
+                                         //document.addEventListener("scanndy_button", smartScanndy.registerbuttonevent, true);
                                          
-                                         });
+                                    });
                }
                
                ScanndyLoader(require, exports, module);
