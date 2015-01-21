@@ -215,7 +215,7 @@ CDVscndyProcessor* processor;
 - (void)rfidscan:(CDVInvokedUrlCommand*)command {
     // Check command.arguments here.
     
-    [self.commandDelegate runInBackground:^{
+    //[self.commandDelegate runInBackground:^{
     
         NSString*       callback;
         
@@ -251,7 +251,7 @@ CDVscndyProcessor* processor;
             [resultDict setObject:response     forKey:@"result"];
             [resultDict setObject:respconv40   forKey:@"result40"];
             [resultDict setObject:respconv13   forKey:@"result13"];
-                    
+            
             result = [CDVPluginResult
                       resultWithStatus: CDVCommandStatus_OK
                       messageAsDictionary: resultDict
@@ -277,7 +277,7 @@ CDVscndyProcessor* processor;
         //[self writeJavascript:js];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:callback];
 
-    }];
+    //}];
 }
 
 @end
