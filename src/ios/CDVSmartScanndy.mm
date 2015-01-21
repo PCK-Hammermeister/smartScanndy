@@ -215,15 +215,6 @@ CDVscndyProcessor* processor;
 - (void)rfidscan:(CDVInvokedUrlCommand*)command {
     // Check command.arguments here.
     
-    
-    UIAlertView *infoAlert = [[UIAlertView alloc] initWithTitle:@"INFO"
-                                                        message:@"before rfidscan"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-    [infoAlert show];
-    [infoAlert release];
-    
     [self.commandDelegate runInBackground:^{
     
         NSString*       callback;

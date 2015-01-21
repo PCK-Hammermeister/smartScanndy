@@ -42,11 +42,7 @@ var ScanndyLoader = function (require, exports, module) {
         
         var scanndyCommand = 'rfidscan:tid';
         
-        alert("SmartScanndy pre exec");
-        
         exec(successCallback, errorCallback, 'SmartScanndy', 'rfidscan', [scanndyCommand]);
-        
-        alert("SmartScanndy post exec");
         
     };
     
